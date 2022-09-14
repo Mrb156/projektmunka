@@ -187,7 +187,7 @@ int main()
 
  // Path from node 1 to 3
  cout << "Shortest path from 1 to 3: ";
- path = constructPath(1, 5);
+ path = constructPath(1, 4);
  printPath(path);
 
 
