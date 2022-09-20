@@ -12,7 +12,7 @@ using namespace std;
 // of the graph.
 
 int NO_PARENT = -1;
-#define nV 10
+#define nV 24
 #define INF 999
 
 // Function to print shortest path
@@ -23,7 +23,8 @@ void printPath(int currentVertex, vector<int> parents)
 
 	// Base case : Source node has
 	// been processed
-	if (currentVertex == NO_PARENT) {
+	if (currentVertex == NO_PARENT)
+	{
 		return;
 	}
 	printPath(parents[currentVertex], parents);
@@ -33,21 +34,10 @@ void printPath(int currentVertex, vector<int> parents)
 // A utility function to print
 // the constructed distances
 // array and shortest paths
-void printSolution(int startVertex, vector<int> distances,
-				vector<int> parents, int vertexIndex)
-{
-	int nVertices = distances.size();
-	cout << "Vertex\t Distance\tPath";
-
-	// for (int vertexIndex = 0; vertexIndex < nVertices;
-	// 	vertexIndex++) {
-		if (vertexIndex != startVertex) {
-			cout << "\n" << startVertex << " -> ";
-			cout << vertexIndex << " \t\t ";
-			cout << distances[vertexIndex] << "\t\t";
-			printPath(vertexIndex, parents);
-		}
-	//}
+void printSolution(int startVertex, vector<int> parents, int vertexIndex)
+{	
+	printPath(vertexIndex, parents);
+	cout << "+";
 }
 
 // Function that implements Dijkstra's
@@ -73,10 +63,11 @@ void dijkstra(int adjacencyMatrix[nV][nV], int startVertex, int destination)
 	// Initialize all distances as
 	// INFINITE and added[] as false
 	for (int vertexIndex = 0; vertexIndex < nVertices;
-		vertexIndex++) {
+		 vertexIndex++)
+	{
 		shortestDistances[vertexIndex] = INT_MAX;
 		added[vertexIndex] = false;
-	 }
+	}
 
 	// Distance of source vertex from
 	// itself is always 0
@@ -92,8 +83,9 @@ void dijkstra(int adjacencyMatrix[nV][nV], int startVertex, int destination)
 
 	// Find shortest path for all
 	// vertices
-	//TODO: meg kell oldani, hogy ne számolja ki az összes pontra az utat
-	for (int i = 1; i < nVertices; i++) {
+	// TODO: meg kell oldani, hogy ne számolja ki az összes pontra az utat
+	for (int i = 1; i < nVertices; i++)
+	{
 
 		// Pick the minimum distance vertex
 		// from the set of vertices not yet
@@ -102,14 +94,14 @@ void dijkstra(int adjacencyMatrix[nV][nV], int startVertex, int destination)
 		// first iteration.
 		int nearestVertex = -1;
 		int shortestDistance = INT_MAX;
+
 		for (int vertexIndex = 0; vertexIndex < nVertices;
-			vertexIndex++) {
-			if (!added[vertexIndex]
-				&& shortestDistances[vertexIndex]
-					< shortestDistance) {
+			 vertexIndex++)
+		{
+			if (!added[vertexIndex] && shortestDistances[vertexIndex] < shortestDistance)
+			{
 				nearestVertex = vertexIndex;
-				shortestDistance
-					= shortestDistances[vertexIndex];
+				shortestDistance = shortestDistances[vertexIndex];
 			}
 		}
 
@@ -121,51 +113,17 @@ void dijkstra(int adjacencyMatrix[nV][nV], int startVertex, int destination)
 		// adjacent vertices of the
 		// picked vertex.
 		for (int vertexIndex = 0; vertexIndex < nVertices;
-			vertexIndex++) {
-			int edgeDistance
-				= adjacencyMatrix[nearestVertex]
-								[vertexIndex];
+			 vertexIndex++)
+		{
+			int edgeDistance = adjacencyMatrix[nearestVertex][vertexIndex];
 
-			if (edgeDistance > 0
-				&& ((shortestDistance + edgeDistance)
-					< shortestDistances[vertexIndex])) {
+			if (edgeDistance > 0 && ((shortestDistance + edgeDistance) < shortestDistances[vertexIndex]))
+			{
 				parents[vertexIndex] = nearestVertex;
-				shortestDistances[vertexIndex]
-					= shortestDistance + edgeDistance;
+				shortestDistances[vertexIndex] = shortestDistance + edgeDistance;
 			}
 		}
 	}
-
-	printSolution(startVertex, shortestDistances, parents, destination);
-    
-}
-
-// Driver Code
-int main()
-{
-    int adjacencyMatrix[nV][nV] = {
-        {0, 4, 1, 5, 10},
-        {4, 0, 10, INF, 3},
-        {INF, 10, 0, 3, INF},
-        {5, INF, 3, 0, 10},
-        {1, 3, INF, 10, 0}};
 	
-	int graph[nV][nV]={
-		{0, 6, 10, 0, 0, 0, 0, 0, 0, 0,    },
-		{6, 0, 12, 11, 14, 0, 0, 0, 0, 0, },
-		{10, 12, 0, 12, 0, 0, 8, 16, 0, 0, },
-		{0, 11, 12, 0, 0, 6, 3, 0, 0, 0,   },
-		{0, 14, 0, 0, 0, 4, 0, 0, 6, 0,    },
-		{0, 0, 0, 6, 4, 0, 0, 0, 12, 0,   },
-		{0, 0, 8, 3, 0, 0, 0, 0, 16, 6,   },
-		{0, 0, 16, 0, 0, 0, 0, 0, 0, 8, },
-		{0, 0, 0, 0, 6, 12, 16, 0, 0, 13, },
-		{0, 0, 0, 0, 0, 0, 6, 8, 13, 0,   },
-
-	};
-	int start = 0;
-	int dest = 5;
-
-	dijkstra(graph, start, dest);
-	return 0;
+	printSolution(startVertex, parents, destination);
 }
